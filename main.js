@@ -20,6 +20,8 @@ var estage = "defalt"
 
 var historico = []
 
+var a = document.createElement("p")
+
 input.type = "number"
 input.required = "required"
 input.focus()
@@ -82,10 +84,14 @@ btn.addEventListener("click", function(){
 
             historico.push({"numero": Number(input.value), "proximidade": quenteFrio(input.value)})
            
-            a = document.createTextNode(" "+historico[historico.length -1].numero+" - "+ historico[historico.length -1].proximidade +" ")
-            textHistorico.append(a)
+            arr = document.createTextNode(""+historico[historico.length -1].numero+" - "+ historico[historico.length -1].proximidade +" ")
+            esp = document.createElement("br")
             
-            
+            a.append(arr)
+            a.append(esp)
+
+            textHistorico.appendChild(a)
+                        
             input.value = ''
             
         }
@@ -94,8 +100,11 @@ btn.addEventListener("click", function(){
 
             historico.push({"numero": Number(input.value), "proximidade": quenteFrio(input.value)})
 
-            a = document.createTextNode(" "+historico[historico.length -1].numero+" - "+ historico[historico.length -1].proximidade +" ")
-            textHistorico.append(a)
+            arr = document.createTextNode(""+historico[historico.length -1].numero+" - "+ historico[historico.length -1].proximidade +"")
+
+            a.append(arr)
+
+            textHistorico.appendChild(a)
 
             tema("gameOver")
             text.innerHTML = "<p> <h1>Game Over </h1>" +
