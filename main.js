@@ -3,25 +3,19 @@
 // Variaveis 
 
 var conteudo =  document.getElementById("jogo")
-
 var btn = document.createElement("button")
 var reset = document.createElement("button")
-
 var text = document.createElement("p")
 var input = document.createElement("input")
 var mostraVidas = document.createElement("p")
 var espaco = document.createElement("br")
 var textVidas = document.createElement("p")
-
 var textHistorico = document.createElement("p")
-
 var NumeroSecreto
 var maiorNumero
 var menorNumero
 var vidas = 0
-
 var estage = "defalt"
-
 var historico = []
 
 
@@ -50,6 +44,9 @@ btn.innerText = "Começar"
 
 conteudo.appendChild(text)
 conteudo.appendChild(textVidas)
+
+// função de verificar tecla do teclado
+
 
 input.onkeydown = (event)=>{
 
@@ -181,8 +178,6 @@ function gameplay(){
             text.innerHTML = "<p> <h1>Game Over </h1>" +
                      "<br> Você perdeu o número era " + NumeroSecreto + " </p>"
             estage = "defalt"
-
-            reset.autofocus = true
             
             input.value = ''
             
@@ -208,10 +203,6 @@ function gameplay(){
             text.innerHTML = "<p><h1> Congratulations HEHEHE</h1> " +
                      "<br> Você descobriu o número era " + NumeroSecreto + " </p>"
             estage = "defalt"
-            
-            
-            reset.autofocus = true
-
 
             textHistorico.innerText = input.value
             
@@ -229,7 +220,6 @@ function gameplay(){
 // botão reset function
 
 reset.innerText = "Reiniciar"
-reset.classList.add("reset")
 
 
 reset.addEventListener('click', ()=>{
