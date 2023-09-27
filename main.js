@@ -5,6 +5,7 @@
 var conteudo =  document.getElementById("jogo")
 
 var btn = document.createElement("button")
+var reset = document.createElement("button")
 
 var text = document.createElement("p")
 var input = document.createElement("input")
@@ -32,7 +33,8 @@ var historico = []
 
 input.type = "number"
 input.required = "required"
-input.focus()
+
+input.autofocus = true
 
 
 // Define Texto Inicial de apresentação do Jogo
@@ -49,17 +51,32 @@ btn.innerText = "Começar"
 conteudo.appendChild(text)
 conteudo.appendChild(textVidas)
 
+input.onkeydown = (event)=>{
 
+    let key = event.key
+    if(key === "Enter"){
+        
+        gameplay()
+
+    }else if(key === "Enter" && reset.autofocus === true){
+
+    }
+}
 // função de ação do botão
 
-btn.addEventListener("click", function(){
+btn.addEventListener("click", ()=>{
+    gameplay()
+})
 
+function gameplay(){
 
     // estado inicial
    
     if(estage === "defalt"){
 
         tema(defalt)
+
+        textVidas.textContent = ''
 
         for(i=0; i < historico.length; i++){
 
@@ -143,7 +160,8 @@ btn.addEventListener("click", function(){
             textHistorico.appendChild(item)
             textHistorico.appendChild(esp)
                         
-           
+            
+
             input.value = ''
 
           
@@ -154,6 +172,7 @@ btn.addEventListener("click", function(){
         else if(Number(vidas) >= 0 && input.value != Number(NumeroSecreto) && input.value != ''){
             
             conteudo.removeChild(input)
+            conteudo.removeChild(btn)
 
             textHistorico.innerText = input.value
             
@@ -163,10 +182,10 @@ btn.addEventListener("click", function(){
                      "<br> Você perdeu o número era " + NumeroSecreto + " </p>"
             estage = "defalt"
 
-            btn.innerText = "Novo Jogo"
-
+            reset.autofocus = true
+            
             input.value = ''
-
+            
            
         }
 
@@ -184,13 +203,17 @@ btn.addEventListener("click", function(){
 
             tema("win")
             conteudo.removeChild(input)
+            conteudo.removeChild(btn)
+
             text.innerHTML = "<p><h1> Congratulations HEHEHE</h1> " +
                      "<br> Você descobriu o número era " + NumeroSecreto + " </p>"
             estage = "defalt"
-            btn.innerText = "Novo Jogo"
             
+            
+            reset.autofocus = true
 
-            textHistorico.innerText = textHistorico.innerText = input.value
+
+            textHistorico.innerText = input.value
             
             input.value = ''
 
@@ -200,13 +223,26 @@ btn.addEventListener("click", function(){
         input.value = ''
 
     }
+}
+
+
+// botão reset function
+
+reset.innerText = "Reiniciar"
+reset.classList.add("reset")
+
+
+reset.addEventListener('click', ()=>{
+    location.reload()
 })
+
 
 
 // adiciona o botão de ação ao HTML
 
 conteudo.appendChild(btn)
 conteudo.appendChild(textHistorico)
+
 
 // adiciona classe para estilização do texto do vetor 
 
@@ -217,6 +253,7 @@ textHistorico.classList.add("historico")
 
 function defalt(){
 
+
     btn.innerText = "Next"
     text.innerHTML = "<p> Digite número maior e em seguinda o número menor " +
                      "<br> Os números definirão a variação onde o número secreto sera gerado </p>"
@@ -224,6 +261,8 @@ function defalt(){
     conteudo.appendChild(input)
     conteudo.appendChild(espaco)
     conteudo.appendChild(btn)
+
+    conteudo.appendChild(reset)
 
     input.placeholder = "Número Maior"
 
@@ -342,12 +381,12 @@ function chances(inp){
         return "verifica"
     }else{
         if(play === "FRIO"){
-            btn.placeholder = "Tente Outra Vez"
+            input.placeholder = "Tente Outra Vez"
             vidas = contarVidas(1)
             text.innerHTML = "<p>Tá Longe</p><h1>Frio</h1>"
             return "verifica"
         }else{
-            btn.placeholder = "Tente Outra Vez"
+            input.placeholder = "Tente Outra Vez"
             vidas = contarVidas(1)
             text.innerHTML = "<p>Tá Perto</p><h1>Quente</h1> "
             return "verifica"
