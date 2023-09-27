@@ -1,4 +1,7 @@
 
+
+// Variaveis 
+
 var conteudo =  document.getElementById("jogo")
 
 var btn = document.createElement("button")
@@ -6,7 +9,7 @@ var btn = document.createElement("button")
 var text = document.createElement("p")
 var input = document.createElement("input")
 var mostraVidas = document.createElement("p")
-var espaço = document.createElement("br")
+var espaco = document.createElement("br")
 var textVidas = document.createElement("p")
 
 var textHistorico = document.createElement("p")
@@ -20,23 +23,39 @@ var estage = "defalt"
 
 var historico = []
 
-var a = document.createElement("p")
+
+
+
+// --------------------
+
+// Define Campo de entrada de dados o INPUT
 
 input.type = "number"
 input.required = "required"
 input.focus()
 
 
+// Define Texto Inicial de apresentação do Jogo
+
 text.innerText = "Jogo Descobrir Número Secreto"
 
+// Define Botão de ação do jogo
+
 btn.innerText = "Começar"
+
+
+// Adiciona conteudo ao div id "jogo"
 
 conteudo.appendChild(text)
 conteudo.appendChild(textVidas)
 
 
+// função de ação do botão
+
 btn.addEventListener("click", function(){
 
+
+    // estado inicial
    
     if(estage === "defalt"){
 
@@ -47,23 +66,39 @@ btn.addEventListener("click", function(){
             historico.pop()
         }
         
-        textHistorico.innerText = ""     
+       
+        textHistorico.innerText = "" 
+
+        if(historico.length === 0){
+            estage = defalt()
+        }
+
+        input.value = ''
 
         estage = defalt()
 
     }
+
+    // estado de definição do numero maior
+
     else if(estage === "maior"){
         
         estage = maior()
         input.value = ''
 
     }
+
+    // estado de definição do numero menor
+
     else if(estage === "menor"){
 
         estage = menor()
         input.value = ''
 
     }
+
+    // estado de definição do numero de vidas as tentativas
+
     else if(estage === "vidas"){
         
         estage = vidasDefine()
@@ -73,10 +108,25 @@ btn.addEventListener("click", function(){
 
 
     }
+
+    // estado de definição das tentativas 
+
     else if(estage === "verifica"){
 
-        textVidas.innerText = "Vidas "+ vidas
+
+        // mostra quantidade de vidas
+
+        textVidas.innerText = "Vidas " + vidas
+
+        // texto de exibição input das tentativas 
+
         input.placeholder = "Jogar"
+
+        //adiciona variaveis nesse local por algum motivo não funciona na global elas não funciona como esperado
+
+        var esp = document.createElement("br")
+
+        // chance defalt ou seja que se repete ao erra o numero secreto
 
         if(input.value != Number(NumeroSecreto) && input.value != '' && vidas > 0){
             
@@ -84,38 +134,52 @@ btn.addEventListener("click", function(){
 
             historico.push({"numero": Number(input.value), "proximidade": quenteFrio(input.value)})
            
-            arr = document.createTextNode(""+historico[historico.length -1].numero+" - "+ historico[historico.length -1].proximidade +" ")
-            esp = document.createElement("br")
-            
-            a.append(arr)
-            a.append(esp)
 
-            textHistorico.appendChild(a)
+            historico.forEach(arr=>{
+                item = document.createElement("span")
+                item.textContent = " "+arr.numero+" - "+ arr.proximidade +" "
+            });
+        
+            textHistorico.appendChild(item)
+            textHistorico.appendChild(esp)
                         
+           
             input.value = ''
-            
+
+          
         }
-        else if(Number(vidas) <= 0 && input.value != Number(NumeroSecreto)){
+
+        // aqui e quando a vida acaba para o game over  
+
+        else if(Number(vidas) >= 0 && input.value != Number(NumeroSecreto) && input.value != ''){
+            
             conteudo.removeChild(input)
 
-            historico.push({"numero": Number(input.value), "proximidade": quenteFrio(input.value)})
-
-            arr = document.createTextNode(""+historico[historico.length -1].numero+" - "+ historico[historico.length -1].proximidade +"")
-
-            a.append(arr)
-
-            textHistorico.appendChild(a)
+            textHistorico.innerText = input.value
+            
 
             tema("gameOver")
             text.innerHTML = "<p> <h1>Game Over </h1>" +
                      "<br> Você perdeu o número era " + NumeroSecreto + " </p>"
             estage = "defalt"
+
             btn.innerText = "Novo Jogo"
+
             input.value = ''
+
+           
         }
+
+        // caso não insira nenhum numero 
+
         else if(input.value === ''){
             text.innerText = "Insira Um número"
+
+            input.value = ''
         }
+
+        // caso acerte o numero e vence o jogo 
+
         else{
 
             tema("win")
@@ -124,19 +188,32 @@ btn.addEventListener("click", function(){
                      "<br> Você descobriu o número era " + NumeroSecreto + " </p>"
             estage = "defalt"
             btn.innerText = "Novo Jogo"
+            
+
+            textHistorico.innerText = textHistorico.innerText = input.value
+            
             input.value = ''
+
+            
         }
+        
+        input.value = ''
 
     }
 })
 
 
+// adiciona o botão de ação ao HTML
+
 conteudo.appendChild(btn)
 conteudo.appendChild(textHistorico)
+
+// adiciona classe para estilização do texto do vetor 
+
 textHistorico.classList.add("historico")
 
 
-
+// função de inicio do jogo
 
 function defalt(){
 
@@ -145,7 +222,7 @@ function defalt(){
                      "<br> Os números definirão a variação onde o número secreto sera gerado </p>"
 
     conteudo.appendChild(input)
-    conteudo.appendChild(espaço)
+    conteudo.appendChild(espaco)
     conteudo.appendChild(btn)
 
     input.placeholder = "Número Maior"
@@ -153,6 +230,9 @@ function defalt(){
     return "maior"
 
 }
+
+// função do Numero Maior a ser definido pelo INPUT
+
 
 function maior(){
 
@@ -180,6 +260,8 @@ function maior(){
 
 }
 
+// função do Numero Menor a ser definido pelo INPUT
+
 function menor(){
     
     if(input.value !='' && input.value > 0 && input.value < Number(maiorNumero) ){
@@ -206,6 +288,8 @@ function menor(){
     }
 }
 
+// função do Numero de Vidas a ser definido pelo INPUT
+
 function vidasDefine(){
     
     if(input.value !='' && input.value > 0){
@@ -225,10 +309,17 @@ function vidasDefine(){
 
 }
 
+// função para contar vidas
+
 function contarVidas(vida){
     vidas = vidas - vida
     return vidas
 }
+
+// função para gerar numero aleatorio definidos pelos valores maior e menor 
+// obetidos pelas função Maior e Menor
+// define variavel numero secreto aleatoria entre os 2 valores
+
 
 function gerarNumeroSecreto(maiorNumero, menorNumero){
 
@@ -239,9 +330,11 @@ function gerarNumeroSecreto(maiorNumero, menorNumero){
 
 }
 
-function chances(inp){
+// função de game player que define as ações de descobrir o numero secreto
+// retorna se ta frio ou querte 
+// conta as vidas perdidas 
 
-   
+function chances(inp){
 
     play = quenteFrio(inp)
     if(inp > Number(maiorNumero) || inp < Number(menorNumero)){
@@ -262,6 +355,11 @@ function chances(inp){
     }
 
 }
+
+// função que define se esta perto ou lonje do numero secreto 
+// define se um numero esta frio ou quete 
+// seta decordo com a procimidade do numero
+
 
 function quenteFrio(valor){
 
@@ -287,33 +385,49 @@ function quenteFrio(valor){
     }
 
 }
- function quente(){
+
+// função de tema quente 
+
+function quente(){
     document.body.style.backgroundColor = "red"
     document.body.style.color = "#fff"
  }
+
+ // função de tema frio
 
 function frio(){
     document.body.style.backgroundColor = "blue"
     document.body.style.color = "#fff"
 }
+
+// função de temas variados 
     
 function tema(statusTema){
+
+    // tema defalt padrão
 
     if(statusTema === "defalt"){
         document.body.style.backgroundColor = "#fff"
         document.body.style.color = "#000"
     }
+
+    // tema game over 
+
     else if (statusTema === "gameOver"){
 
         document.body.style.backgroundColor = "#000"
         document.body.style.color = "#fff"
+    }
+    
+    // tema venceu
 
-    }else if (statusTema === "win"){
+    else if (statusTema === "win"){
 
             document.body.style.backgroundColor = "yellow"
-            document.body.style.color = "#ccc"
-
-    }else{
+            document.body.style.color = "#000"
+    }
+    // redefine tema padrão caso não seja referenciado nenhum
+    else{
 
         document.body.style.backgroundColor = "#fff"
         document.body.style.color = "#000"
