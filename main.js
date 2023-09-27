@@ -18,10 +18,39 @@ var vidas = 0
 var estage = "defalt"
 var historico = []
 
+var mFundo = new Audio("fundo.mp3")
+var icon = document.createElement("img")
 
-
+var btnaudio = new Audio("btn.mp3")
+var restaudio = new Audio("r.mp3")
 
 // --------------------
+
+icon.src = "off.png"
+mFundo.play()
+iconimg = true
+mFundo.loop = true
+mFundo.volume = 0.4
+
+icon.classList.add("audio")
+
+icon.addEventListener("click", ()=>{
+   
+    if(iconimg === true){
+        mFundo.pause()
+        iconimg = false
+        icon.src = "on.png"
+
+    }else{
+        mFundo.play()
+        iconimg = true
+        icon.src = "off.png"
+    }
+})
+
+
+
+
 
 // Define Campo de entrada de dados o INPUT
 
@@ -30,6 +59,14 @@ input.required = "required"
 
 input.autofocus = true
 
+input.classList.add('hover')
+btn.classList.add('hover')
+reset.classList.add('hover')
+
+b = document.getElementsByClassName("hover")
+b.onmouseover = ()=>{
+    alert("ok")
+}
 
 // Define Texto Inicial de apresentação do Jogo
 
@@ -41,6 +78,7 @@ btn.innerText = "Começar"
 
 
 // Adiciona conteudo ao div id "jogo"
+conteudo.appendChild(icon)
 
 conteudo.appendChild(text)
 conteudo.appendChild(textVidas)
@@ -52,7 +90,7 @@ input.onkeydown = (event)=>{
 
     let key = event.key
     if(key === "Enter"){
-        
+        btnaudio.play()
         gameplay()
 
     }else if(key === "Enter" && reset.autofocus === true){
@@ -62,7 +100,9 @@ input.onkeydown = (event)=>{
 // função de ação do botão
 
 btn.addEventListener("click", ()=>{
+    btnaudio.play()
     gameplay()
+
 })
 
 function gameplay(){
@@ -223,7 +263,8 @@ reset.innerText = "Reiniciar"
 
 
 reset.addEventListener('click', ()=>{
-    location.reload()
+    restaudio.play()
+    setTimeout(()=>{location.reload()}, 1000)
 })
 
 
