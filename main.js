@@ -28,6 +28,7 @@ var restaudio = new Audio("r.mp3")
 
 icon.src = "off.png"
 iconimg = true
+mFundo.play()
 mFundo.loop = true
 mFundo.volume = 0.4
 
@@ -111,7 +112,7 @@ function gameplay(){
     if(estage === "defalt"){
 
         mFundo.play()
-        
+
         tema(defalt)
 
         textVidas.textContent = ''
